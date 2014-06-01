@@ -1,0 +1,11 @@
+1. 3 data samples in input file: good
+
+2. MenuList data record: good
+
+3. Report2: good
+
+4. Class diagram: good
+
+5. Flow chart: 
+   - functions to process menu are missing
+   - menu option Compare is missing
