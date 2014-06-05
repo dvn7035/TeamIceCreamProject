@@ -2,7 +2,7 @@
 #define ICECREAMMENU_H_INCLUDED
 
 #include "IceCreamFlavor.h"
-#include "HashedTable.h"
+//#include "HashedTable.h"
 #include "BinarySearchTree.h"
 
 const int SIZE = 100;
@@ -22,6 +22,8 @@ public:
     void ListKeySequence();
     void PrintIndentedTree();
     void PrintHashStats();
+    void quit ();
+    void compare ();
 };
 
 #endif // ICECREAMMENU_H_INCLUDED

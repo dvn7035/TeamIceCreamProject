@@ -5,7 +5,7 @@
 
 #include "IceCreamFlavor.h"
 #include "IceCreamMenu.h"
-#include "HashedTable.h"
+//#include "HashedTable.h"
 #include "BinarySearchTree.h"
 
 
@@ -20,8 +20,9 @@ IceCreamMenu::IceCreamMenu()
 	string cmpnut = "nut";	//compares the word nut to what is is in the string nut to know if there are nuts or no nuts in the ice cream
 	string nut;			//read in nut
 	string comma;			//stores a comma read in
+	bool added;
 
-	//int count = 0;
+	int count = 0;	//store count for hashtable size
 	//int index;
 
 	ifstream infile;
@@ -29,11 +30,7 @@ IceCreamMenu::IceCreamMenu()
 
 
 	//instance of the icecreamflavor class. is this necessary?
-
-	for (int i=0; i< SIZE; i++)	//initialize the hash arr elements. is this necessary?
-	{
-		HashedTable [i] = new IceCreamFlavor;
-	}
+	//initialize the hash arr elements. is this necessary? no right? since the hash table isnt made yet?
 
 	bool eofReached = false;
 
@@ -61,7 +58,7 @@ IceCreamMenu::IceCreamMenu()
 		if (!eofReached)
 		{
 			infile>>calorie>>comma>>price;	//reads this extra time
-
+			count++;	//increment count for hash table
 			if (nut==cmpnut)
 			{
 				isNut=true;
@@ -76,12 +73,12 @@ IceCreamMenu::IceCreamMenu()
 			//store as a MenuItem
 
 			//call to put on tree
-			IceCreamFlavor *data = new IceCreamFlavor(flavor, price, calorie, isNut);
-			BST.insert(data);				//there are no set functions, so is this how we do it?
-			
-			//call to stick in hash table
+			IceCreamFlavor* data = new IceCreamFlavor(flavor, price, calorie, isNut);
+			added = BST.insert(data);				//put in BST
+			//if (added == true)		
+				//call to stick in hash table
 			//HashedTable[index]->insert(IceCreamFlavor(data));		//i dont get how this works. since the insert in the hashed table class 
-															//is responsible for calling the hashing function or so we agreed
+															//is responsible for calling the hashing function
 
 		}
 		
@@ -179,9 +176,9 @@ void IceCreamMenu::DeleteFlavor()
 		return;
 	}
 
-	removedBST = BST.remove(flavor);
-	//removedTable = ////removal function of Table
-
+	removedBST = BST.remove(flavor);//removal function of pointer of table
+	//removedTable = ////removal function of pointer of Table
+	//delete data
 	if (removedBST == true && removedTable == true)
 		cout<<"\nremoval sucessful."<<endl;
 	else
@@ -192,15 +189,8 @@ void IceCreamMenu::DeleteFlavor()
 
 void IceCreamMenu::FindAndDisplayFlavor()
 {
-	//I will use the tree. i think we decieded on hashed table though
-	// i put this using the tree for now because i don't get how to call the
-	// hashed table to search because it doesn't have a search function
-
-	//we can change later.
-
 	string name;
 	IceCreamFlavor* search;
-	IceCreamFlavor* returned;	//need for parameter
 	bool found;			//need to know if found
 
 
@@ -210,8 +200,20 @@ void IceCreamMenu::FindAndDisplayFlavor()
 
 	search->setName(name);
 
-	if(BST.getEntry(search, returned))
-		cout<<returned<<endl;	//if found, prints
+	//search hashtable (?) how
 
 	return;
+}
+
+void IceCreamMenu::quit()	//need to add based on instruction
+{
+	ifstream infile;
+	string fname;
+
+	cout<<"Enter file name: ";
+	cin >> fname;		
+	cin.sync();		//flushes input stream incase of spaces and such
+	infile.open(fname);
+	//infile <<  	// write to infile to save data. copy from?
+	infile.close();
 }

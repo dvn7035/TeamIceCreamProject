@@ -33,13 +33,10 @@ public:
 
 	// Operator Overloads
 
-	friend ostream& operator<< (ostream &os, const IceCreamFlavor &obj)
-	{
-		return os << obj.name;
-	}
+	friend ostream& operator<< (ostream &os, const IceCreamFlavor &obj){return os << obj.name;}
 	bool operator> (const IceCreamFlavor &right) {return (name > right.name);}
 	bool operator< (const IceCreamFlavor &right) {return (name < right.name);}
-	bool operator== (const IceCreamFlavor &right) {return (name == right.name);} // ? true : false;
+	bool operator== (const IceCreamFlavor &right) {return (name == right.name);} 
 	bool operator!= (const IceCreamFlavor &right) {return !operator==(right);}
     IceCreamFlavor& operator= (const IceCreamFlavor &right)
 	{
