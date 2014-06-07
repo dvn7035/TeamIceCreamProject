@@ -1,6 +1,9 @@
 #ifndef ICECREAMFLAVOR_H_INCLUDED
 #define ICECREAMFLAVOR_H_INCLUDED
 
+#include<string>
+using namespace std;
+
 class IceCreamFlavor
 {
 private:
