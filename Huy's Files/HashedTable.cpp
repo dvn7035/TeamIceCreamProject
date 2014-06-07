@@ -13,13 +13,17 @@ using namespace std;
 
 HashedTable::HashedTable()
 {
-	number = 0;
-	probe = 0;
-	data = 0;
 	size = 53; // default
+	data = new IceCreamFlavor*[size];
+	probe = new int [size];
+	for (int i=0; i<size; i++)
+	{
+		data[i] = 0;
+	}
+	number = 0;
 }
 
-HashedTable::HashedTable(int size)
+HashedTable::HashedTable( int size)
 {
 	data = new IceCreamFlavor*[size];
 	probe = new int[size];
@@ -44,10 +48,9 @@ int HashedTable:: HashingFunction(string food)
 	return index;
 }
 
-bool HashedTable :: add(IceCreamFlavor * address)
+bool HashedTable :: add(IceCreamFlavor* address)
 {
 	cout << size << endl;
-	cout << data[0];
 	cout << address << endl;
 	int probe=0;
 	bool success = false;
@@ -112,5 +115,5 @@ void HashedTable::displayStats()
 		cout << max_probe[i];
 	}
 	
-	cout << "No collision: " << noCollision << " dishes" << endl;
+	cout <<endl<< "No collision: " << noCollision << " dishes" << endl;
 }
