@@ -1,0 +1,28 @@
+Chocolate, no nut, 140, 1.50
+Vanilla, no nut, 130, 1.50
+Green tea, no nut, 125, 1.90
+Fudge Brownie, no nut, 153, 2.50
+Mango Sorbet, no nut, 120, 1.50
+Strawberry, no nut, 135, 1.75
+Grape Nut, nut, 165, 2.50
+Butter Pecan, nut, 175, 2.75
+Mint Oreo, no nut, 180, 2.50
+Pistachio, nut, 152, 2.50
+Rainbow sherbet, no nut, 132, 1.75
+Blueberry Cheesecake, no nut, 144, 2.50
+Mango, no nut, 145, 2.75
+Vanilla Soft Serve, no nut, 300, 3.00
+Coffee, no nut, 134, 2.50
+French Vanilla, no nut, 130, 1.75
+Peanut Butter Swirl, nut, 183, 2.50
+Pumpkin, no nut, 165, 2.75
+Almond, nut, 155, 2.75
+Mint Chocolate Chip, no nut, 176, 1.75
+Peppermint, no nut, 148, 2.75
+Maple Walnut, nut, 169, 2.75
+Pecan Caramel Swirl, nut, 167, 2.75
+Cake Batter, no nut, 184, 2.50
+Peanut Brittle, nut, 167, 2.50
+Lemon Sorbet, no nut, 131, 1.50
+Snickers Soft Serve, nut, 400, 3.00
+
