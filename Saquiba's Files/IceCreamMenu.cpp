@@ -5,11 +5,15 @@
 
 #include "IceCreamFlavor.h"
 #include "IceCreamMenu.h"
-//#include "HashedTable.h"
+#include "HashedTable.h"
 #include "BinarySearchTree.h"
 
-
-
+// display function to pass to BST traverse functions
+void display (IceCreamFlavor* & anItem) 
+{
+	cout << *anItem;
+	return;
+} 
 
 IceCreamMenu::IceCreamMenu()
 {
@@ -22,8 +26,7 @@ IceCreamMenu::IceCreamMenu()
 	string comma;			//stores a comma read in
 	bool added;
 
-	int count = 0;	//store count for hashtable size
-	//int index;
+	int count = 0;			//store count for hashtable size
 
 	ifstream infile;
 	string fname;
@@ -74,15 +77,17 @@ IceCreamMenu::IceCreamMenu()
 
 			//call to put on tree
 			IceCreamFlavor* data = new IceCreamFlavor(flavor, price, calorie, isNut);
-			added = BST.insert(data);				//put in BST
-			//if (added == true)		
-				//call to stick in hash table
-			//HashedTable[index]->insert(IceCreamFlavor(data));		//i dont get how this works. since the insert in the hashed table class 
-															//is responsible for calling the hashing function
-
-		}
-		
+			added = BST.insert(data);	//put in BST. not put in hashedtable yet because do not know how big it is
+			if (added == true)
+				count ++;				//hashedtable count.
+									//didnt check for repeats because there aren't repeats in the textfile.
+									//there never will be, not even when the program restarts again
+		}		
 	}
+
+	//create hashedTable, and initialize it
+
+
 	cout<< "Hello User."<<endl;
 	//Close file
 	infile.close();
@@ -92,20 +97,24 @@ void IceCreamMenu::AddFlavor()
 	string name;
 	double price;
 	int calories;
-	bool nuts;
+//	bool nuts;
 	int pick;
 	IceCreamFlavor* flavor;
 	IceCreamFlavor* returned;
 	bool insertBST;
 	bool insertTable;
+//	int index;
 	//bool found;
 
 	cout<<"What flavor would you like to add?\nEnter the name of the flavor: ";
 	getline (cin, name);
 	flavor->setName(name);
 	cout<<endl;
-	if (BST.getEntry(flavor, returned))	//um, i think in the hashed table, we don't have a search function without
-									//using the insert, so i used the tree.
+	
+
+	//if (HST.findRecord(			//requires this function to get index ... why? and in that case, this canot acess the hashing function anyways 
+	if (BST.getEntry(flavor, returned))	//temporarily use tree until hash table search is fixed.
+									
 	{
 		cout<<"Entry cannot be added because of duplicate key.\n"<<endl;
 		return;
@@ -134,24 +143,26 @@ void IceCreamMenu::AddFlavor()
 
 	cout<<endl; 
 
-	cout<<"How much does this flacor cost>\nEnter cost without dollar sign: ";
+	cout<<"How much does this flavor cost>\nEnter cost without dollar sign: ";
 	cin>>price;
 	flavor->setPrice(price);
 
 	cout<<endl;
 	
-	//actual insert:
-	insertBST=BST.insert(flavor);				//there are no set functions, so is this how we do it?
-			
-	//call to stick in hash table
-	//HashedTable[index]->insert(IceCreamFlavor(flavor));		//how does this work?
-	//HashedTable.insert(flavor);							//if class? and insert would call the hashing function?how would we check it inserted?
-	
-	if (insertBST == true && insertTable == true)
-		cout<<"\ninserted.\n";
+	//actual insert:				
+	insertTable = HST.add(flavor);
+	if (insertTable == true)
+	{
+		insertBST = BST.insert(flavor);
+		if(insertBST == false)
+		{
+			cout<<"\ninsert failed.\n";
+			//HST.					//remove from hashed table. Hashed Table doesn't have a remove data function
+		}
+	}
 	else
 		cout<<"\ninsert failed.\n";
-	
+		
 	return;
 }
 
@@ -169,18 +180,20 @@ void IceCreamMenu::DeleteFlavor()
 	flavor->setName(name);
 	cout<<endl;
 	
-	if (BST.getEntry(flavor, returned))	//um, i think in the hashed table, we don't have a search function without
-									//using the insert, so i used the tree.
+	if (BST.getEntry(flavor, returned))	//again same problem, this should be the hashed table's job
 	{
 		cout<<"Entry cannot be deleted because it doesn't exist.\n"<<endl;
 		return;
 	}
 
 	removedBST = BST.remove(flavor);//removal function of pointer of table
-	//removedTable = ////removal function of pointer of Table
+	//removedTable = HST.
 	//delete data
 	if (removedBST == true && removedTable == true)
+	{
+		delete returned;		//return has the adress of storage
 		cout<<"\nremoval sucessful."<<endl;
+	}
 	else
 		cout<<"\nRemoval not successful."<<endl;
 
@@ -200,20 +213,47 @@ void IceCreamMenu::FindAndDisplayFlavor()
 
 	search->setName(name);
 
+	//again same problem with hashed table
+
 	//search hashtable (?) how
 
 	return;
 }
 
-void IceCreamMenu::quit()	//need to add based on instruction
+void IceCreamMenu::ListHashedTable()
+{
+	
+}
+
+void IceCreamMenu::ListKeySequence()
+{
+	BST.inOrder(display);
+}
+
+void IceCreamMenu::PrintIndentedTree()
+{
+	BST.printIndented();
+}
+
+void IceCreamMenu::PrintHashStats()
+{
+	HST.displayStats();
+}
+
+void IceCreamMenu::quit()	
 {
 	ifstream infile;
+	ifstream originalFile;
 	string fname;
 
 	cout<<"Enter file name: ";
 	cin >> fname;		
-	cin.sync();		//flushes input stream incase of spaces and such
+	cin.sync();						//flushes input stream incase of spaces and such
 	infile.open(fname);
-	//infile <<  	// write to infile to save data. copy from?
+	originalFile.open("IceCreamShop.txt");	//needs to automatically save on this too, according to the insturctions
+	
+	//infile <<  						// write to infile to save data. copy from hashtable..how?
+	
 	infile.close();
+	originalFile.close();
 }
