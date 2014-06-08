@@ -11,22 +11,12 @@
 
 using namespace std;
 
-HashedTable::HashedTable()
-{
-	size = 53; // default
-	data = new IceCreamFlavor*[size];
-	probe = new int [size];
-	for (int i=0; i<size; i++)
-	{
-		data[i] = 0;
-	}
-	number = 0;
-}
+const int maxProbe = 4;
 
-HashedTable::HashedTable( int size)
+
+void HashedTable::AllocateMemory(int size)
 {
 	data = new IceCreamFlavor*[size];
-	probe = new int[size];
 	for (int i=0; i<size; i++)
 	{
 		data[i] = 0;
@@ -53,21 +43,21 @@ bool HashedTable :: add(IceCreamFlavor* address)
 	cout << size << endl;
 	cout << address << endl;
 	int probe=0;
-	bool success = false;
+	bool inserted = false;
 	string food = address->getName();
 	int index = HashingFunction(food);
-	while ( success == false)
+	for(probe = 0; probe <= maxProbe && inserted == false; probe++ )
 	{
-		if (data[index] == 0 )
+		if (data[index] == 0)
 		{
 			data[index] = address;
-			cout << data[index] << endl;
-			this->probe[index] = probe;
-			success = true;
+			number++;
+			//cout << data[index] << endl;
+			data[index]->setProbes(probe);
+			inserted = true;
 		}
 		else
 		{
-			probe++;
 			index = ColRes(index,probe);
 			if (index > size)
 			{
@@ -75,7 +65,7 @@ bool HashedTable :: add(IceCreamFlavor* address)
 			}
 		}
 	}
-	return success;
+	return inserted;
 }
 
 //quadratic
@@ -89,7 +79,7 @@ int HashedTable::ColRes (int index, int probe)
 
 void HashedTable::displayStats()
 {
-	int max = probe[0];
+	int max = data[0]->getProbes();
 	vector<IceCreamFlavor*> max_probe;
 	int noCollision = 0;
 	float factor = static_cast<float>(number) / size;
@@ -99,21 +89,32 @@ void HashedTable::displayStats()
 	cout << "Collisions: " << endl << endl;
 	for( int i=0; i<size; i++)
 	{
-		if(probe[i] > 1)
-			cout << "Index:  "<< i << "  probes:  " << probe[i] << endl;
-		if(probe[i] >= max)
+		if(data[i]->getProbes() >= 0)
+			cout << "Index:  "<< i << "  probes:  " << data[i]->getProbes() <<"  "<< *data[i]  << endl;
+		if(data[i]->getProbes() >= max)
 		{
-			max = probe[i];
+			data[i]->setProbes(max);
 			max_probe.push_back(data[i]);
 		}
 
-		if(probe[i] == 0) noCollision ++;
+		if(data[i]->getProbes() == 0) noCollision ++;
 	}
+
 	cout << "Max number of probes is " << max << " at: " <<endl;
 	for (size_t i = 0; i < max_probe.size(); i++)
 	{
-		cout << max_probe[i];
+		cout << *(max_probe[i]) << "   ";
 	}
 	
 	cout <<endl<< "No collision: " << noCollision << " dishes" << endl;
 }
+
+bool HashedTable::search(string food)
+{
+	bool found = false;
+	int index = 0;
+	index = HashingFunction(food);
+	if (food == data[index]->getName())
+	{
+		found == true;
+

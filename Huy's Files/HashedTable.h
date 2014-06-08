@@ -1,4 +1,4 @@
-// Hashed Table to store the dictionary
+// Hashed Table to store the menu
 // Huy Nguyen
 // 06/03/2014
 #ifndef _HASHED_TABLE
@@ -17,15 +17,14 @@ private:
 	int number;
 	int size;
 	IceCreamFlavor ** data;
-	int* probe;
 	int HashingFunction(string);
 	int ColRes(int,int);
 public:
 	HashedTable();
-	HashedTable(int);
+	void AllocateMemory(int);
 	bool add(IceCreamFlavor * address);
 	void displayStats();
-	bool findRecord(int index, string word);
+	bool search(string word);
 };
 
 
