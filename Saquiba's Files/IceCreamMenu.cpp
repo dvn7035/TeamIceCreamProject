@@ -18,211 +18,183 @@ void display (IceCreamFlavor* & anItem)
 IceCreamMenu::IceCreamMenu()
 {
 	string flavor;			//stores flavor
+	string cmpnut = " nut";	//compares the word nut to what is is in the string nut to know if there are nuts or no nuts in the ice cream
+	string nut;			//read in nut
 	bool isNut = false;		//stores if there is a nut
 	int calorie;			//stores calories
 	double price;			//stores price
-	string cmpnut = "nut";	//compares the word nut to what is is in the string nut to know if there are nuts or no nuts in the ice cream
-	string nut;			//read in nut
-	string comma;			//stores a comma read in
-	bool added;
+	string punct;			//stores a comma or newline read in
 
 	int count = 0;			//store count for hashtable size
 
 	ifstream infile;
 	string fname;
-
-
-	//instance of the icecreamflavor class. is this necessary?
-	//initialize the hash arr elements. is this necessary? no right? since the hash table isnt made yet?
-
 	bool eofReached = false;
 
 	infile.open("IceCreamShop.txt");
-	while (!infile)  // check for file open success or prompt for filename
+	while (!infile)							// check for file open success or prompt for filename
 	{
 		cout << "Error opening "<<fname<< "file."<<endl<<"Enter filename: ";
 		cin >> fname;
 		infile.open (fname.c_str());
 	}
 
-	if (!infile.eof())	//check empty file
+	if (!infile.eof())							//check empty file. If file is empty, cannot do anything
 		eofReached = false;
-		
-		
-	while (!eofReached)
+	
+	if (!eofReached)							//if the file is not empty
 	{
-		getline(infile, flavor, ',');		//reads in flavor, which is seperated by a comma
-		getline(infile, nut, ',');		//reads in nut which is seperated by a comma
-
-		//check if eof
-		if (infile.eof())
-			eofReached = true;		//and it won't run again and copy last line of int and double again
-		
-		if (!eofReached)
-		{
-			infile>>calorie>>comma>>price;	//reads this extra time
-			count++;	//increment count for hash table
-			if (nut==cmpnut)
-			{
-				isNut=true;
-				cout<<flavor<<", "<<"nut"<<", "<<calorie<<", $"<<setfill ('0')<<setprecision(2)<<price<<endl;	//why doesnt this print the last 0?
-			}
-			else
-			{
-				isNut=false;
-				cout<<flavor<<", "<<"no nut"<<", "<<calorie<<", $"<<setfill ('0')<<setprecision(2)<<price<<endl;
-			}
-
-			//store as a MenuItem
-
-			//call to put on tree
-			IceCreamFlavor* data = new IceCreamFlavor(flavor, price, calorie, isNut);
-			added = BST.insert(data);	//put in BST. not put in hashedtable yet because do not know how big it is
-			if (added == true)
-				count ++;				//hashedtable count.
-									//didnt check for repeats because there aren't repeats in the textfile.
-									//there never will be, not even when the program restarts again
-		}		
+		while (getline(infile, punct, '\n'))		//getline. NOTE: Runs an extra time
+			count++;							//increase count
+		HST.AllocateMemory(count);				//initialize the HashTable
 	}
 
-	//create hashedTable, and initialize it
+	infile.clear();							//reset point to beginning of file
+	infile.seekg(0, infile.beg);
+	
+	//cout<<"COUNT: "<<count<<endl;
+	
+	while (!eofReached)
+	{
+		getline(infile, flavor, ',');				//reads in flavor, which is seperated by a comma
+		getline(infile, nut, ',');				//reads in nut which is seperated by a comma
+			
+		if (infile.eof())						//checks for eof
+			eofReached = true;					//and it won't run again and copy last line of int and double again
+			
+		if (!eofReached)
+		{
+			infile>>calorie>>punct>>price;		//reads this extra time
+			getline(infile, punct, '\n');
+			
+			if (nut==cmpnut)
+				isNut=true;
+			else
+				isNut=false;
 
+			//call to insert
+			IceCreamFlavor* data = new IceCreamFlavor(flavor, price, calorie, isNut);
+			HST.add(data);
+			BST.insert(data);	//not need to be if statement. it has to be able to add the first time
+							//it is assumed it would be anyways with count being sent the first time
+							//I Know we were discussing if ( HashedTable.insert() && tree.insert())
+							//but it doesnt make sense for the constructor.
 
-	cout<< "Hello User."<<endl;
-	//Close file
-	infile.close();
+			//cout<<"HERE "<<data->getName()<<" "<<data->getPrice()<<" "<<data->getName().size()<<endl;
+			//
+			//if (HST.search("Chocolate"))	//works here. if somethinf not found, say cake batter, then the program crashes at the start
+			//	cout<<"found"<<endl;
+			//else
+			//	cout<<"not found" <<endl;
+		}
+	}
+
+	infile.close();				//Close file
 }
 void IceCreamMenu::AddFlavor()
 {
 	string name;
 	double price;
 	int calories;
-//	bool nuts;
-	int pick;
-	IceCreamFlavor* flavor;
-	IceCreamFlavor* returned;
+	string pick;
+	IceCreamFlavor* flavor = new IceCreamFlavor();
+	IceCreamFlavor* returned = new IceCreamFlavor();
 	bool insertBST;
 	bool insertTable;
-//	int index;
+
 	//bool found;
 
 	cout<<"What flavor would you like to add?\nEnter the name of the flavor: ";
 	getline (cin, name);
 	flavor->setName(name);
-	cout<<endl;
-	
-
-	//if (HST.findRecord(			//requires this function to get index ... why? and in that case, this canot acess the hashing function anyways 
-	if (BST.getEntry(flavor, returned))	//temporarily use tree until hash table search is fixed.
-									
-	{
-		cout<<"Entry cannot be added because of duplicate key.\n"<<endl;
-		return;
-	}
-
-	cout<<endl;
-	
-	do
-	{
-		cout<<"Are there nuts in "<<name<< " ?\nEnter 1 for yes and 2 for no; you will be prompted again if you submit an invalid answer: ";
-		cin>>pick;
-		cin.sync();
-	}while ((pick !='1') || (pick !='2'));
-	
-	if (pick == 1)
-		flavor->setnuts(true);
-	else
-		flavor->setnuts(false);
-	
-	cout<<endl;
-
-	cout<<"How many calories are there?\nEnter number of calories: ";
-	cin>>calories;
-	flavor->setcal(calories);
 	cin.sync();
-
-	cout<<endl; 
-
-	cout<<"How much does this flavor cost>\nEnter cost without dollar sign: ";
-	cin>>price;
-	flavor->setPrice(price);
-
 	cout<<endl;
-	
-	//actual insert:				
-	insertTable = HST.add(flavor);
-	if (insertTable == true)
-	{
-		insertBST = BST.insert(flavor);
-		if(insertBST == false)
-		{
-			cout<<"\ninsert failed.\n";
-			//HST.					//remove from hashed table. Hashed Table doesn't have a remove data function
-		}
-	}
+
+	//if (!(HST.getEntry(flavor, returned))||!(HST.add(flavor)))		//what it will be (discussed)
+	if (HST.search(name)||!HST.add(flavor))
+		cout<<"Entry cannot be added.\n"<<endl;
 	else
-		cout<<"\ninsert failed.\n";
-		
+	{
+		cout<<endl;
+		do
+		{
+			cout<<"Are there nuts in "<<name<< " ?\nEnter 1 for yes and 2 for no;\nyou will be prompted again if you submit an invalid answer: ";
+			cin>>pick;
+			cin.sync();
+		}while ((pick !="1")); //|| (pick !="2"));		//why does this not work
+	
+		if (pick == "1")
+			flavor->setnuts(true);
+		else
+			flavor->setnuts(false);
+	
+		cout<<endl;
+
+		cout<<"How many calories are there?\nEnter number of calories: ";
+		cin>>calories;
+		flavor->setcal(calories);
+		cin.sync();
+
+		cout<<endl; 
+
+		cout<<"How much does this flavor cost>\nEnter cost without dollar sign: ";
+		cin>>price;
+		flavor->setPrice(price);
+
+		cout<<endl;
+	
+		BST.insert(flavor);				//insert in BST at end
+	}
 	return;
 }
 
 void IceCreamMenu::DeleteFlavor()
 {
 	string name;
-	IceCreamFlavor* flavor;
-	IceCreamFlavor* returned;
-	bool removedBST = false;
-	bool removedTable = false;
-
+	IceCreamFlavor* flavor = new IceCreamFlavor();
+	IceCreamFlavor* returned = new IceCreamFlavor();
 
 	cout<<"What flavor would you like to delete?\nEnter the name of the flavor: ";
 	getline (cin, name);
 	flavor->setName(name);
 	cout<<endl;
 	
-	if (BST.getEntry(flavor, returned))	//again same problem, this should be the hashed table's job
-	{
+	if (HST.getEntry(flavor, returned))				//pretending HashTable getEntry works like this
+	//if (!HST.search(name))	//what it is now
 		cout<<"Entry cannot be deleted because it doesn't exist.\n"<<endl;
-		return;
-	}
 
-	removedBST = BST.remove(flavor);//removal function of pointer of table
-	//removedTable = HST.
-	//delete data
-	if (removedBST == true && removedTable == true)
-	{
-		delete returned;		//return has the adress of storage
-		cout<<"\nremoval sucessful."<<endl;
-	}
-	else
-		cout<<"\nRemoval not successful."<<endl;
+	else											//if the name is found
+	{			//there is no delete function in the hashtable
+		if (HST.remove(flavor) && BST.remove(flavor))
+			delete returned;						//returned has the adress of storage
 
+	}
 	return;
 }
 
 void IceCreamMenu::FindAndDisplayFlavor()
 {
 	string name;
-	IceCreamFlavor* search;
-	bool found;			//need to know if found
+	IceCreamFlavor* search = new IceCreamFlavor();
+	IceCreamFlavor* returned = new IceCreamFlavor();	//want to make it an object.
+	bool found;								//need to know if found
 
 
 	cout<<"\nEnter the name of what you would like to search for: ";
 	getline(cin, name);
 	cout<<endl;
+	
+	search->setName(name);					//the name is set
 
-	search->setName(name);
-
-	//again same problem with hashed table
-
-	//search hashtable (?) how
+	if(HST.getEntry(search, returned))			//pretend HashTable is like this
+		cout<<endl<<"test 3:"<<*returned<<endl;
 
 	return;
 }
 
 void IceCreamMenu::ListHashedTable()
 {
-	
+	//hashtable has no list table
 }
 
 void IceCreamMenu::ListKeySequence()
@@ -248,11 +220,16 @@ void IceCreamMenu::quit()
 
 	cout<<"Enter file name: ";
 	cin >> fname;		
+	infile.open (fname.c_str());
 	cin.sync();						//flushes input stream incase of spaces and such
-	infile.open(fname);
 	originalFile.open("IceCreamShop.txt");	//needs to automatically save on this too, according to the insturctions
 	
-	//infile <<  						// write to infile to save data. copy from hashtable..how?
+	//hash table has no getsize function (?)
+	for(int i=0; i<HST.getsize(); i++)
+	{
+		infile << HST[i]<<endl;						// write to infile to save data. 
+		originalFile <<
+	}
 	
 	infile.close();
 	originalFile.close();

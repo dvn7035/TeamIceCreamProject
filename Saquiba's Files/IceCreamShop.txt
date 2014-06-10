@@ -25,4 +25,3 @@ Cake Batter, no nut, 184, 2.50
 Peanut Brittle, nut, 167, 2.50
 Lemon Sorbet, no nut, 131, 1.50
 Snickers Soft Serve, nut, 400, 3.00
-
