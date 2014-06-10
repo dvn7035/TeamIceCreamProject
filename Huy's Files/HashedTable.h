@@ -20,7 +20,7 @@ private:
 	int HashingFunction(string);
 	int ColRes(int,int);
 public:
-	HashedTable();
+	HashedTable() {};
 	void AllocateMemory(int);
 	bool add(IceCreamFlavor * address);
 	void displayStats();
@@ -28,6 +28,7 @@ public:
 	bool getEntry(const IceCreamFlavor* , IceCreamFlavor* &);
 	bool remove (IceCreamFlavor *, IceCreamFlavor * &);
 	void printTable();
+	int getSize (){return size;}		//sorry, huy, i was experimenting with writing to file. idk if we need it yet. will let you know
 };
 
 

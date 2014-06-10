@@ -11,9 +11,9 @@
 
 using namespace std;
 
-const int maxProbe = 4;
+const int maxProbe = 100;
 
-HashedTable::HashedTable()
+/*HashedTable::HashedTable()
 {
 	size = 53; // default
 	data = new IceCreamFlavor*[size];
@@ -22,10 +22,11 @@ HashedTable::HashedTable()
 		data[i] = 0;
 	}
 	number = 0;
-}
+}*/
 
-void HashedTable::AllocateMemory(int size)
+void HashedTable::AllocateMemory(int count)
 {
+	size = count *2 - 1;
 	data = new IceCreamFlavor*[size];
 	for (int i=0; i<size; i++)
 	{
@@ -50,8 +51,8 @@ int HashedTable:: HashingFunction(string food)
 
 bool HashedTable :: add(IceCreamFlavor* address)
 {
-	cout << size << endl;
-	cout << address << endl;
+	//cout << size << endl;
+	//cout << address->getName() << endl;
 	int probe=0;
 	bool inserted = false;
 	string food = address->getName();
@@ -130,7 +131,7 @@ bool HashedTable::getEntry(const IceCreamFlavor* target , IceCreamFlavor* & retu
 		if (food == data[index]->getName())
 		{
 			found = true;
-			*returned = *target;
+			returned = data[index];
 		}
 		else
 			index = ColRes(index,probes);
