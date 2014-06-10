@@ -89,41 +89,42 @@ int HashedTable::ColRes (int index, int probe)
 
 void HashedTable::displayStats()
 {
-	int max = data[0]->getProbes();
+	int max = 0;
 	vector<IceCreamFlavor*> max_probe;
 	int noCollision = 0;
 	float factor = static_cast<float>(number) / size;
-	cout << "There are " << number <<" dishes in the menu" << endl;
+	cout << "There are " << number <<" type of ice creams in the menu" << endl;
 	cout << "The size of the array is " << size << endl;
 	cout << "Load factor is " << fixed << setprecision(2) << factor*100 << "%" << endl <<endl;
 	cout << "Collisions: " << endl << endl;
 	for( int i=0; i<size; i++)
 	{
-		if(data[i]->getProbes() >= 1)
+		if(data[i]!=0  && data[i]->getProbes() >= 1)
 			cout << "Index:  "<< i << "  probes:  " << data[i]->getProbes() <<"  "<< *data[i]  << endl;
-		if(data[i]->getProbes() >= max)
+		if(data[i]!=0 && data[i]->getProbes() >= max)
 		{
-			data[i]->setProbes(max);
+			max = data[i]->getProbes();
 			max_probe.push_back(data[i]);
 		}
 
-		if(data[i]->getProbes() == 0) noCollision ++;
+		if(data[i]!=0 && data[i]->getProbes() == 0) noCollision ++;
 	}
 
 	cout << "Max number of probes is " << max << " at: " <<endl;
 	for (size_t i = 0; i < max_probe.size(); i++)
 	{
+		if(max_probe[i]->getProbes() == max )
 		cout << *(max_probe[i]) << "   ";
 	}
 	
-	cout <<endl<< "No collision: " << noCollision << " dishes" << endl;
+	cout <<endl<< "No collision: " << noCollision << " ice creams" << endl;
 }
 
 bool HashedTable::search(int & index, string food)
 {
 	bool found = false;
 	index = HashingFunction(food);
-	for(int probes = 0; probes <= maxProbe && found == false; probes ++)
+	for(int probes = 0; found == false  && probes <= maxProbe; probes ++)
 	{
 		if (food == data[index]->getName())
 			found = true;
@@ -133,7 +134,7 @@ bool HashedTable::search(int & index, string food)
 	return found;
 }
 
-bool HashedTable::deleteFood(IceCreamFlavor* address, string food)
+bool HashedTable::remove(IceCreamFlavor* address, string food)
 {
 	int index= 0;
 	if (search(index,food))
@@ -149,7 +150,8 @@ void HashedTable::printTable()
 {
 	for( int i=0; i<size; i++)
 	{
-		if(data[i]->getProbes() >= 0)
+
+		if(data[i]!= 0 && data[i]->getProbes() >= 0)
 			cout << "Index:  "<< i << "  probes:  " << data[i]->getProbes() <<"  "<< *data[i]  << endl;
 	}
 }

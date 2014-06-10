@@ -25,7 +25,7 @@ public:
 	bool add(IceCreamFlavor * address);
 	void displayStats();
 	bool search(int & index, string word);
-	bool deleteFood (IceCreamFlavor * address, string food);
+	bool remove (IceCreamFlavor * address, string food);
 	void printTable();
 };
 
