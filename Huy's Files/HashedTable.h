@@ -24,7 +24,9 @@ public:
 	void AllocateMemory(int);
 	bool add(IceCreamFlavor * address);
 	void displayStats();
-	bool search(string word);
+	bool search(int & index, string word);
+	bool deleteFood (IceCreamFlavor * address, string food);
+	void printTable();
 };
 
 
