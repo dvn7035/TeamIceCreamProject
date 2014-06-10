@@ -120,6 +120,24 @@ void HashedTable::displayStats()
 	cout <<endl<< "No collision: " << noCollision << " ice creams" << endl;
 }
 
+bool HashedTable::getEntry(const IceCreamFlavor* target , IceCreamFlavor* & returned)
+{
+	bool found = false;
+	string food = target->getName();
+	int index = HashingFunction(food);
+	for(int probes = 0; found == false  && probes <= maxProbe; probes ++)
+	{
+		if (food == data[index]->getName())
+		{
+			found = true;
+			*returned = *target;
+		}
+		else
+			index = ColRes(index,probes);
+	}
+	return found;
+}
+
 bool HashedTable::search(int & index, string food)
 {
 	bool found = false;
@@ -132,14 +150,17 @@ bool HashedTable::search(int & index, string food)
 			index = ColRes(index,probes);
 	}
 	return found;
+
 }
 
-bool HashedTable::remove(IceCreamFlavor* address, string food)
+bool HashedTable::remove(IceCreamFlavor* target, IceCreamFlavor* &returned)
 {
 	int index= 0;
+	//IceCreamFlavor data;
+	string food = target->getName();
 	if (search(index,food))
 	{
-		address = data[index];
+		returned = data[index];
 		data[index] = 0;
 		return true;
 	}
