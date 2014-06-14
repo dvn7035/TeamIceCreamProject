@@ -9,11 +9,25 @@
 #include "BinarySearchTree.h"
 
 // display function to pass to BST traverse functions
-void display (IceCreamFlavor* & anItem) 
+void display (IceCreamFlavor*& anItem) 
 {
-	cout << *anItem;
-	return;
+	cout << *anItem << endl;
 } 
+
+void displayForIndented(IceCreamFlavor* anItem)
+{
+	cout << anItem->getName() << endl;
+}
+
+bool compareL(IceCreamFlavor *item1, IceCreamFlavor *item2)
+{
+	return item1->getName() < item2->getName();
+}
+
+bool compareE(IceCreamFlavor *item1, IceCreamFlavor *item2)
+{
+	return item1->getName() == item2->getName();
+}
 
 IceCreamMenu::IceCreamMenu()
 {
@@ -45,15 +59,17 @@ IceCreamMenu::IceCreamMenu()
 
 	infile.clear();							//reset point to beginning of file
 	infile.seekg(0, infile.beg);
-	
+
 	//cout<<"COUNT: "<<count<<endl;
-	
+
 	while (getline(infile, flavor, ','))
 	{
+		if (flavor[0] == '\n')
+			flavor.erase(0,1);
 		getline(infile, nut, ',');				//reads in nut which is seperated by a comma
 		nut.erase(0,1);
 		infile>>calorie>>punct>>price;	
-	
+
 		if (nut==cmpnut)
 			isNut=true;
 		else
@@ -62,7 +78,7 @@ IceCreamMenu::IceCreamMenu()
 		//calls to insert
 		IceCreamFlavor* data = new IceCreamFlavor(flavor, price, calorie, isNut);
 		IceCreamFlavor* returned = new IceCreamFlavor();
-		if (!HST.add(data) /*|| !BST.insert(data)*/)
+		if (!HST.add(data) || !BST.insert(compareL, compareE, data))
 			cout<<"Data Entry Failed"<<endl;
 	//	cout<<*data<<endl;
 	}
@@ -71,59 +87,58 @@ IceCreamMenu::IceCreamMenu()
 }
 void IceCreamMenu::AddFlavor()
 {
-	//string name;
-	//double price;
-	//int calories;
-	//string pick;
-	//IceCreamFlavor* flavor = new IceCreamFlavor();
-	//IceCreamFlavor* returned = new IceCreamFlavor();
-	//bool insertBST;
-	//bool insertTable;
+	string name;
+	double price;
+	int calories;
+	string pick;
+	IceCreamFlavor* flavor = new IceCreamFlavor();
+	IceCreamFlavor* returned = new IceCreamFlavor();
+	bool insertBST;
+	bool insertTable;
 
-	////bool found;
+	//bool found;
 
-	//cout<<"What flavor would you like to add?\nEnter the name of the flavor: ";
-	//getline (cin, name);
-	//flavor->setName(name);
-	//cin.sync();
-	//cout<<endl;
+	cout<<"What flavor would you like to add?\nEnter the name of the flavor: ";
+	getline (cin, name);
+	flavor->setName(name);
+	cin.sync();
+	cout<<endl;
 
-	////if (!(HST.getEntry(flavor, returned))||!(HST.add(flavor)))		//what it will be (discussed)
-	//if (HST.search(name)||!HST.add(flavor))
-	//	cout<<"Entry cannot be added.\n"<<endl;
-	//else
-	//{
-	//	cout<<endl;
-	//	do
-	//	{
-	//		cout<<"Are there nuts in "<<name<< " ?\nEnter 1 for yes and 2 for no;\nyou will be prompted again if you submit an invalid answer: ";
-	//		cin>>pick;
-	//		cin.sync();
-	//	}while ((pick !="1")); //|| (pick !="2"));		//why does this not work
-	//
-	//	if (pick == "1")
-	//		flavor->setnuts(true);
-	//	else
-	//		flavor->setnuts(false);
-	//
-	//	cout<<endl;
+	if ((HST.getEntry(flavor, returned))||!(HST.add(flavor)))		//what it will be (discussed)
+		cout<<"Entry cannot be added.\n"<<endl;
+	else
+	{
+		cout<<endl;
+		do
+		{
+			cout<<"Are there nuts in "<<name<< " ?\nEnter 1 for yes and 2 for no;\nyou will be prompted again if you submit an invalid answer: ";
+			cin>>pick;
+			cin.sync();
+		}while ((pick !="1")); //|| (pick !="2"));		//why does this not work
+	
+		if (pick == "1")
+			flavor->setnuts(true);
+		else
+			flavor->setnuts(false);
+	
+		cout<<endl;
 
-	//	cout<<"How many calories are there?\nEnter number of calories: ";
-	//	cin>>calories;
-	//	flavor->setcal(calories);
-	//	cin.sync();
+		cout<<"How many calories are there?\nEnter number of calories: ";
+		cin>>calories;
+		flavor->setcal(calories);
+		cin.sync();
 
-	//	cout<<endl; 
+		cout<<endl; 
 
-	//	cout<<"How much does this flavor cost>\nEnter cost without dollar sign: ";
-	//	cin>>price;
-	//	flavor->setPrice(price);
+		cout<<"How much does this flavor cost>\nEnter cost without dollar sign: ";
+		cin>>price;
+		flavor->setPrice(price);
 
-	//	cout<<endl;
-	//
-	//	BST.insert(flavor);				//insert in BST at end
-	//}
-	//return;
+		cout<<endl;
+	
+		BST.insert(compareL, compareE, flavor);				//insert in BST at end
+	}
+	return;
 }
 
 void IceCreamMenu::DeleteFlavor()
@@ -137,10 +152,10 @@ void IceCreamMenu::DeleteFlavor()
 	flavor->setName(name);
 	cout<<endl;
 
-	if (HST.remove(flavor, returned) /*&& BST.remove(flavor)*/)	//bst
+	if (HST.remove(flavor, returned) && BST.remove(compareL, flavor))	//bst
 		delete returned;								//returned has the adress of storage
 	else 
-		cout<<"Entry cannot be deleted.\n"<<endl;
+		cout<<"Entry cannot be found.\n"<<endl;
 
 	return;
 }
@@ -154,11 +169,13 @@ void IceCreamMenu::FindAndDisplayFlavor()
 	cout<<"\nEnter the name of what you would like to search for: ";
 	getline(cin, name);
 	cout<<endl;
-	
+
 	search->setName(name);					//the name is set
 
 	if(HST.getEntry(search, returned))			//pretend HashTable is like this
 		cout<<endl<<*returned<<endl;
+	else 
+		cout << "Entry not found" << endl << endl;
 
 	return;
 }
@@ -166,24 +183,28 @@ void IceCreamMenu::FindAndDisplayFlavor()
 void IceCreamMenu::ListHashedTable()
 {
 	HST.printTable();
+	cout<<endl;
 }
 
 void IceCreamMenu::ListKeySequence()
 {
 	BST.inOrder(display);
+	cout<<endl;
 }
 
 void IceCreamMenu::PrintIndentedTree()
 {
-	BST.printIndented();
+	BST.printIndented(displayForIndented);
+	cout<<endl;
 }
 
 void IceCreamMenu::PrintHashStats()
 {
 	HST.displayStats();
+	cout<<endl;
 }
 
-void IceCreamMenu::quit()	
+void IceCreamMenu::Quit()	
 {
 	ifstream infile;
 	ifstream originalFile;
@@ -194,14 +215,19 @@ void IceCreamMenu::quit()
 	infile.open (fname.c_str());
 	cin.sync();						//flushes input stream incase of spaces and such
 	originalFile.open("IceCreamShop.txt");	//needs to automatically save on this too, according to the insturctions
-	
-	
+
+
 	//for(int i=0; i<HST.getsize(); i++)
 	//{
 	//	infile << HST[i]<<endl;						// write to infile to save data. 
 	//	originalFile <<
 	//}
-	
+
 	infile.close();
 	originalFile.close();
+}
+
+void IceCreamMenu::Compare()
+{
+	return;
 }

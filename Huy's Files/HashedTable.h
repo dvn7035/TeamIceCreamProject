@@ -19,12 +19,13 @@ private:
 	IceCreamFlavor ** data;
 	int HashingFunction(string);
 	int ColRes(int,int);
+	bool search(int & index, string food);
+	//bool isPrime(int);
 public:
 	HashedTable() {};
 	void AllocateMemory(int);
 	bool add(IceCreamFlavor * address);
 	void displayStats();
-	bool search(int & index, string food);
 	bool getEntry(const IceCreamFlavor* , IceCreamFlavor* &);
 	bool remove (IceCreamFlavor *, IceCreamFlavor * &);
 	void printTable();

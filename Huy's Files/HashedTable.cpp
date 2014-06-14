@@ -8,6 +8,7 @@
 #include<vector>
 #include "HashedTable.h"
 #include<iomanip>
+#include<math.h>
 
 using namespace std;
 
@@ -26,7 +27,7 @@ const int maxProbe = 100;
 
 void HashedTable::AllocateMemory(int count)
 {
-	size = count *2 - 1;
+	size = 59;
 	data = new IceCreamFlavor*[size];
 	for (int i=0; i<size; i++)
 	{
@@ -38,14 +39,27 @@ void HashedTable::AllocateMemory(int count)
 
 int HashedTable:: HashingFunction(string food)
 {
-	int index = 0;
-	long sum=0;
+	
+	/*int index = 0;
+	unsigned long sum=0;
 	const char * temp = food.c_str();
 	for(size_t i=0; i < food.length() ; i++)
 	{
 		sum = sum + (i+13)*temp[i]; // add more random to the number by changing i (loop) and add it with a prime number
 	}
 	index = (sum) %  size;
+	return index; */
+	int index = 0;
+	int cube;
+	for (size_t i = 0; i < food.length(); i++)
+	{
+		cube = pow(food[i],3.0);
+		index += cube;
+	}
+	if (index >= size)
+	{
+		index = index % size;
+	}
 	return index;
 }
 
@@ -57,8 +71,32 @@ bool HashedTable :: add(IceCreamFlavor* address)
 	bool inserted = false;
 	string food = address->getName();
 	int index = HashingFunction(food);
-	for(probe = 0; probe <= maxProbe && inserted == false; probe++ )
+	/*for(probe = 0; probe <= maxProbe ; probe++ )
 	{
+		if (data[index] == 0)
+		{
+			data[index] = address;
+			number++;
+			//cout << data[index] << endl;
+			data[index]->setProbes(probe);
+			inserted = true;
+			break;
+		}
+		else
+		{
+			cout << *data[index] << endl;
+			cout << *address << endl << endl;
+			index = ColRes(index,probe);
+			if (index > size)
+			{
+				index = index % size;
+			}
+		}
+	}*/
+
+	while (inserted == false)
+	{
+		
 		if (data[index] == 0)
 		{
 			data[index] = address;
@@ -69,6 +107,9 @@ bool HashedTable :: add(IceCreamFlavor* address)
 		}
 		else
 		{
+			probe ++;
+			cout << *data[index] << endl;
+			cout << *address << endl << endl;
 			index = ColRes(index,probe);
 			if (index > size)
 			{
@@ -76,6 +117,7 @@ bool HashedTable :: add(IceCreamFlavor* address)
 			}
 		}
 	}
+
 	return inserted;
 }
 
@@ -117,7 +159,7 @@ void HashedTable::displayStats()
 		if(max_probe[i]->getProbes() == max )
 		cout << *(max_probe[i]) << "   ";
 	}
-	
+
 	cout <<endl<< "No collision: " << noCollision << " ice creams" << endl;
 }
 
@@ -128,6 +170,8 @@ bool HashedTable::getEntry(const IceCreamFlavor* target , IceCreamFlavor* & retu
 	int index = HashingFunction(food);
 	for(int probes = 0; found == false  && probes <= maxProbe; probes ++)
 	{
+		if (data[index] == 0)
+			return found;
 		if (food == data[index]->getName())
 		{
 			found = true;
@@ -145,6 +189,8 @@ bool HashedTable::search(int & index, string food)
 	index = HashingFunction(food);
 	for(int probes = 0; found == false  && probes <= maxProbe; probes ++)
 	{
+		if (data[index] == 0)
+			return found;
 		if (food == data[index]->getName())
 			found = true;
 		else
@@ -174,6 +220,6 @@ void HashedTable::printTable()
 	{
 
 		if(data[i]!= 0 && data[i]->getProbes() >= 0)
-			cout << "Index:  "<< i << "  probes:  " << data[i]->getProbes() <<"  "<< *data[i]  << endl;
+			cout <<*data[i]  << endl;
 	}
 }

@@ -1,7 +1,7 @@
-/**/
-
 #include <iostream>
 #include <iomanip>
+#include "IceCreamMenu.h"
+
 
 int main()
 {
@@ -12,17 +12,17 @@ int main()
 	do
 	{
 		cout << "a. add ice cream flavor" << endl;
-			 << "b. delete ice cream flavor" << endl;
-			 << "c. find an ice cream flavor" << endl;
-			 << "d. list flavors in hashed table order" << endl;
-			 << "e. list flavors in alphabetical order" << end;
-			 << "f. print indented tree" << endl;
-			 << "g. display hashtable statistics" << endl;
-			 << "h. compare" << endl;
-			 << "i. quit" << end;
+		cout << "b. delete ice cream flavor" << endl;
+		cout	 << "c. find an ice cream flavor" << endl;
+		cout	 << "d. list flavors in hashed table order" << endl;
+		cout	 << "e. list flavors in alphabetical order" << endl;
+		cout	 << "f. print indented tree" << endl;
+		cout	 << "g. display hashtable statistics" << endl;
+		cout	 << "h. compare" << endl;
+		cout	 << "i. quit" << endl;
 
 			 cin >> choice;
-			 //need to flush
+			cin.sync();
 			 switch (choice)
 			 {
 				case 'a': 

@@ -14,7 +14,7 @@ class IceCreamMenu
 {
 private:
     BinarySearchTree<IceCreamFlavor*> BST;
-    HashedTable table;
+    HashedTable HST;
 public:
     IceCreamMenu();
     void AddFlavor();
