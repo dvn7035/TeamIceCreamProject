@@ -30,6 +30,7 @@ public:
 	bool remove (IceCreamFlavor *, IceCreamFlavor * &);
 	void printTable();
 	int getSize (){return size;}		//sorry, huy, i was experimenting with writing to file. idk if we need it yet. will let you know
+	IceCreamFlavor * getData (int i){return data[i];}
 };
 
 

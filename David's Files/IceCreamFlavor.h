@@ -43,7 +43,15 @@ public:
 
 	// Operator Overloads
 
-	friend ostream& operator<< (ostream &os, const IceCreamFlavor &obj){return os << obj.name;}
+	friend ostream& operator<< (ostream &os, const IceCreamFlavor &obj)
+	{
+		string nut;
+		if (obj.nuts ==  true)
+			nut = "nut";
+		else 
+			nut = "no nut";
+		return os << obj.name <<", "<<nut<<", "<<obj.calories<<", "<<obj.price<<endl;
+	}
 	bool operator> (const IceCreamFlavor &right) {return (name > right.name);}
 	bool operator< (const IceCreamFlavor &right) {return (name < right.name);}
 	bool operator== (const IceCreamFlavor &right) {return (name == right.name);}

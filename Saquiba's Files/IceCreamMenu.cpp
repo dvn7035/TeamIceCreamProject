@@ -3,6 +3,8 @@
 #include <string>
 #include <iomanip>
 
+#include "LinkedList.h"
+#include "List.h"
 #include "IceCreamFlavor.h"
 #include "IceCreamMenu.h"
 #include "HashedTable.h"
@@ -13,7 +15,10 @@ void display (IceCreamFlavor*& anItem)
 {
 	cout << *anItem << endl;
 } 
-
+void Delete (IceCreamFlavor*& anItem) 
+{
+	delete anItem;
+} 
 void displayForIndented(IceCreamFlavor* anItem)
 {
 	cout << anItem->getName() << endl;
@@ -60,7 +65,6 @@ IceCreamMenu::IceCreamMenu()
 	infile.clear();							//reset point to beginning of file
 	infile.seekg(0, infile.beg);
 
-	//cout<<"COUNT: "<<count<<endl;
 
 	while (getline(infile, flavor, ','))
 	{
@@ -80,7 +84,7 @@ IceCreamMenu::IceCreamMenu()
 		IceCreamFlavor* returned = new IceCreamFlavor();
 		if (!HST.add(data) || !BST.insert(compareL, compareE, data))
 			cout<<"Data Entry Failed"<<endl;
-	//	cout<<*data<<endl;
+
 	}
 
 	infile.close();				//Close file
@@ -90,13 +94,10 @@ void IceCreamMenu::AddFlavor()
 	string name;
 	double price;
 	int calories;
-	string pick;
+	int pick;
 	IceCreamFlavor* flavor = new IceCreamFlavor();
 	IceCreamFlavor* returned = new IceCreamFlavor();
-	bool insertBST;
-	bool insertTable;
-
-	//bool found;
+	bool valid = false;
 
 	cout<<"What flavor would you like to add?\nEnter the name of the flavor: ";
 	getline (cin, name);
@@ -111,12 +112,14 @@ void IceCreamMenu::AddFlavor()
 		cout<<endl;
 		do
 		{
-			cout<<"Are there nuts in "<<name<< " ?\nEnter 1 for yes and 2 for no;\nyou will be prompted again if you submit an invalid answer: ";
+			cout<<"Are there nuts in "<<name<< " ?\nEnter 1 for yes and 0 for no;\nyou will be prompted again if you submit an invalid answer: ";
 			cin>>pick;
 			cin.sync();
-		}while ((pick !="1")); //|| (pick !="2"));		//why does this not work
+			if ((pick == 0)||(pick == 1))
+				valid = true;
+		}while (!valid);		
 	
-		if (pick == "1")
+		if (pick == 1)
 			flavor->setnuts(true);
 		else
 			flavor->setnuts(false);
@@ -130,13 +133,16 @@ void IceCreamMenu::AddFlavor()
 
 		cout<<endl; 
 
-		cout<<"How much does this flavor cost>\nEnter cost without dollar sign: ";
+		cout<<"How much does this flavor cost?\nEnter cost without dollar sign: ";
 		cin>>price;
 		flavor->setPrice(price);
 
 		cout<<endl;
 	
 		BST.insert(compareL, compareE, flavor);				//insert in BST at end
+		
+		delete flavor;
+		delete returned;
 	}
 	return;
 }
@@ -153,10 +159,15 @@ void IceCreamMenu::DeleteFlavor()
 	cout<<endl;
 
 	if (HST.remove(flavor, returned) && BST.remove(compareL, flavor))	//bst
+	{
+		cout<<"entry deleted\n\n";
 		delete returned;								//returned has the adress of storage
+	}
 	else 
 		cout<<"Entry cannot be found.\n"<<endl;
 
+	delete flavor;
+	delete returned;
 	return;
 }
 
@@ -176,6 +187,9 @@ void IceCreamMenu::FindAndDisplayFlavor()
 		cout<<endl<<*returned<<endl;
 	else 
 		cout << "Entry not found" << endl << endl;
+
+	delete search;
+	delete returned;
 
 	return;
 }
@@ -206,8 +220,8 @@ void IceCreamMenu::PrintHashStats()
 
 void IceCreamMenu::Quit()	
 {
-	ifstream infile;
-	ifstream originalFile;
+	ofstream infile;
+	ofstream originalFile;
 	string fname;
 
 	cout<<"Enter file name: ";
@@ -215,13 +229,19 @@ void IceCreamMenu::Quit()
 	infile.open (fname.c_str());
 	cin.sync();						//flushes input stream incase of spaces and such
 	originalFile.open("IceCreamShop.txt");	//needs to automatically save on this too, according to the insturctions
+	
+	for (int i = 0; i< HST.getSize(); i ++)
+	{
+		if(HST.getData(i)!= 0)
+		{
+			infile <<*HST.getData(i);
+			originalFile <<*HST.getData(i);
+		}
+	}
+	
+	BST.inOrder(Delete);
+	//delete tree?
 
-
-	//for(int i=0; i<HST.getsize(); i++)
-	//{
-	//	infile << HST[i]<<endl;						// write to infile to save data. 
-	//	originalFile <<
-	//}
 
 	infile.close();
 	originalFile.close();
@@ -229,5 +249,39 @@ void IceCreamMenu::Quit()
 
 void IceCreamMenu::Compare()
 {
+	string IceCreamFlavor1, IceCreamFlavor2, IceCreamFlavor3, IceCreamFlavor4;
+	IceCreamFlavor* Return = new IceCreamFlavor();
+	IceCreamFlavor* search = new IceCreamFlavor();
+	List <IceCreamFlavor> list;
+	int location;
+
+	cout << "Please enter two keys seperated by a newline that you want to compare:" << endl;
+	getline(cin, IceCreamFlavor1);
+	getline(cin, IceCreamFlavor2);
+	//cin >>  IceCreamFlavor1 >> IceCreamFlavor2;
+
+	search->setName(IceCreamFlavor1);
+	if (HST.getEntry(search, Return))
+		list.insert (*Return, 1);
+
+	search->setName(IceCreamFlavor2);
+	if(HST.getEntry(search, Return))
+		list.insert (*Return, 2);
+
+	list.display();
+	for(int i = 0; i<2; i++)
+	{
+		cout<<"Enter another key you want to compare and a location seperated by a newline: \n";
+		getline(cin, IceCreamFlavor3);
+		cin >> location;
+		search->setName(IceCreamFlavor3);
+		if(HST.getEntry(search, Return))
+			list.insert (*Return, location);
+		cin.sync();
+		list.display();
+	}
+	delete Return;
+	delete search;
+	list.clear();
 	return;
 }
