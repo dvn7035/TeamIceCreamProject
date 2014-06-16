@@ -12,7 +12,7 @@
 
 using namespace std;
 
-const int maxProbe = 100;
+const int maxProbe = 5;
 
 /*HashedTable::HashedTable()
 {
@@ -24,10 +24,29 @@ const int maxProbe = 100;
 	}
 	number = 0;
 }*/
+bool IsPrime(int number)
+{	// Given:   num an integer > 1
+	// Returns: true if num is prime
+	// 			false otherwise.
+	
+	int i;
+	
+	for (i=2; i<number; i++)
+	{
+		if (number % i == 0)
+		{
+			return false;
+		}
+	}
+	
+	return true;	
+}
 
 void HashedTable::AllocateMemory(int count)
 {
-	size = 59;
+	size = count * 2 + 1;
+	while ( !IsPrime(size)) size ++; 
+	cout << "The size is: " << size << endl;
 	data = new IceCreamFlavor*[size];
 	for (int i=0; i<size; i++)
 	{
@@ -75,13 +94,11 @@ bool HashedTable :: add(IceCreamFlavor* address)
 		else
 		{
 			probe ++;
-			//cout << *data[index] << endl;
-			//cout << *address << endl << endl;
+			/*cout << *data[index] << endl;
+			cout << "at index: " << index << endl;
+			cout << *address << endl << endl;*/
 			index = ColRes(index,probe);
-			if (index > size)
-			{
-				index = index % size;
-			}
+			
 		}
 	}
 
@@ -93,6 +110,10 @@ int HashedTable::ColRes (int index, int probe)
 {
 	int result=0;
 	result = index + probe*probe;
+	if (result >= size-1)
+			{
+				result = result % size;
+			}
 	return result;
 }
 
@@ -137,9 +158,8 @@ bool HashedTable::getEntry(const IceCreamFlavor* target , IceCreamFlavor* & retu
 	int index = HashingFunction(food);
 	for(int probes = 0; found == false  && probes <= maxProbe; probes ++)
 	{
-		if (data[index] == 0)
-			return found;
-		if (food == data[index]->getName())
+
+		if (data[index] != 0 && food == data[index]->getName())
 		{
 			found = true;
 			returned = data[index];
@@ -156,9 +176,7 @@ bool HashedTable::search(int & index, string food)
 	index = HashingFunction(food);
 	for(int probes = 0; found == false  && probes <= maxProbe; probes ++)
 	{
-		if (data[index] == 0)
-			return found;
-		if (food == data[index]->getName())
+		if (data[index] != 0 && food == data[index]->getName())
 			found = true;
 		else
 			index = ColRes(index,probes);
@@ -172,10 +190,11 @@ bool HashedTable::remove(IceCreamFlavor* target, IceCreamFlavor* &returned)
 	int index= 0;
 	//IceCreamFlavor data;
 	string food = target->getName();
-	if (search(index,food))
+	if (search(index,food))	//this line
 	{
 		returned = data[index];
 		data[index] = 0;
+		number--;
 		return true;
 	}
 	else return false;
