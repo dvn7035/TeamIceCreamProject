@@ -29,7 +29,7 @@ public:
 	bool getEntry(const IceCreamFlavor* , IceCreamFlavor* &);
 	bool remove (IceCreamFlavor *, IceCreamFlavor * &);
 	void printTable();
-	int getSize (){return size;}		//sorry, huy, i was experimenting with writing to file. idk if we need it yet. will let you know
+	int getSize (){return size;}		
 	IceCreamFlavor * getData (int i){return data[i];}
 };
 
