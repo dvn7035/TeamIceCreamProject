@@ -33,14 +33,16 @@ public:
 	void setnuts(bool nut) {nuts = nut;}
 	void setProbes(int num) {probes = num;}
 
-    // Accessors 
+    // Accessors (David: I think some of these are unnesseary)
+
 	string getName() const {return name;}
-	bool getNuts() const {return nuts;} 
+	bool getNuts() const {return nuts;} //getNuts lol
 	int getCalories() const {return calories;}
 	double getPrice() const {return price;}
 	int getProbes() const {return probes;}
 
 	// Operator Overloads
+
 	friend ostream& operator<< (ostream &os, const IceCreamFlavor &obj)
 	{
 		string nut;
