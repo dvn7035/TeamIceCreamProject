@@ -36,6 +36,7 @@ public:
 	void inOrder(void visit(ItemType &)) const		{_inorder(visit, rootPtr);}
 	void postOrder(void visit(ItemType &)) const	{_postorder(visit, rootPtr);}
 	void reverseOrder(void visit(ItemType &)) const		{_reverseorder(visit, rootPtr);}
+<<<<<<< HEAD:Sean's Files/BinaryTree.h
     
 	void printIndented(void visit(ItemType)) const						{_printIndented(visit, rootPtr);}
     
@@ -45,6 +46,17 @@ public:
 	virtual bool getEntry(const ItemType & anEntry, ItemType & returnedItem) const = 0;
     
 private:
+=======
+
+	void printIndented(void visit(ItemType)) const						{_printIndented(visit, rootPtr);}
+
+	// abstract functions to be implemented by derived class
+	virtual bool insert(bool visit(ItemType, ItemType), bool visit1(ItemType, ItemType), const ItemType & newData) = 0; 
+	virtual bool remove(bool visit(ItemType, ItemType), const ItemType & data) = 0; 
+	virtual bool getEntry(bool visit(ItemType, ItemType), bool visit1(ItemType, ItemType), const ItemType & anEntry, ItemType & returnedItem) const = 0;
+
+private:   
+>>>>>>> origin/master:BinaryTree.h
 	// delete all nodes from the tree
 	void destroyTree(BinaryNode<ItemType>* nodePtr);
     
@@ -58,15 +70,39 @@ private:
 	
 	// traverse in reverse order
 	void _reverseorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
+<<<<<<< HEAD:Sean's Files/BinaryTree.h
     
 	void _printIndented(void visit(ItemType), BinaryNode<ItemType>* nodePtr, int indent = 0) const;
     
 };
+=======
+
+	void _printIndented(void visit(ItemType), BinaryNode<ItemType>* nodePtr, int indent = 0) const;
+   
+}; 
+>>>>>>> origin/master:BinaryTree.h
 
 //////////////////////////////////////////////////////////////////////////
 
 template<class ItemType>
+<<<<<<< HEAD:Sean's Files/BinaryTree.h
 void BinaryTree<ItemType>::_printIndented( void visit(ItemType), BinaryNode<ItemType>* nodePtr, int indent = 0) const
+=======
+void BinaryTree<ItemType>::_printIndented(void visit(ItemType), BinaryNode<ItemType>* nodePtr, int indent = 0) const
+{
+	if (nodePtr != 0)
+	{
+		_printIndented(visit, nodePtr->getRightPtr(), indent + 7);
+		cout << setw(indent) << " " ;
+		visit(nodePtr->getItem());
+		_printIndented(visit, nodePtr->getLeftPtr(), indent + 7);
+	}
+}
+
+
+template<class ItemType>
+BinaryNode<ItemType>* BinaryTree<ItemType>::copyTree(const BinaryNode<ItemType>* nodePtr) 
+>>>>>>> origin/master:BinaryTree.h
 {
 	if (nodePtr != 0)
 	{
@@ -106,7 +142,11 @@ void BinaryTree<ItemType>::destroyTree(BinaryNode<ItemType>* nodePtr)
 		nodePtr = 0;
 		count = 0;
 	}
+<<<<<<< HEAD:Sean's Files/BinaryTree.h
 }
+=======
+}  
+>>>>>>> origin/master:BinaryTree.h
 
 template<class ItemType>
 void BinaryTree<ItemType>::_preorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const
@@ -171,3 +211,7 @@ BinaryTree<ItemType> & BinaryTree<ItemType>::operator=(const BinaryTree<ItemType
 
 
 #endif
+<<<<<<< HEAD:Sean's Files/BinaryTree.h
+=======
+
+>>>>>>> origin/master:BinaryTree.h

@@ -1,19 +1,19 @@
 #ifndef ICECREAMMENU_H_INCLUDED
 #define ICECREAMMENU_H_INCLUDED
 
-#include "IceCreamFlavor.h"
-//#include "HashedTable.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+ 
+#include "HashedTable.h"
 #include "BinarySearchTree.h"
-
-const int SIZE = 100;
 
 class IceCreamMenu
 {
 private:
-    BinarySearchTree <IceCreamFlavor*> BST;
-	HashedTable HST;
-    //IceCreamFlavor* HashedTable [SIZE];
-    //SortedList<IceCreamFlavor*> HashedTable;
+    BinarySearchTree<IceCreamFlavor*> BST;
+    HashedTable HST;
 public:
     IceCreamMenu();
     void AddFlavor();
@@ -23,8 +23,8 @@ public:
     void ListKeySequence();
     void PrintIndentedTree();
     void PrintHashStats();
-    void quit ();
-    void compare ();
+	void Compare();
+	void Quit();
 };
 
 #endif // ICECREAMMENU_H_INCLUDED

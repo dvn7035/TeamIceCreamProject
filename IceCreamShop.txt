@@ -1,3 +1,4 @@
+Mango, no nut, 145, 2.75
 Chocolate, no nut, 140, 1.50
 Vanilla, no nut, 130, 1.50
 Green tea, no nut, 125, 1.90
@@ -10,10 +11,8 @@ Mint Oreo, no nut, 180, 2.50
 Pistachio, nut, 152, 2.50
 Rainbow sherbet, no nut, 132, 1.75
 Blueberry Cheesecake, no nut, 144, 2.50
-Mango, no nut, 145, 2.75
 Vanilla Soft Serve, no nut, 300, 3.00
 Coffee, no nut, 134, 2.50
-French Vanilla, no nut, 130, 1.75
 Peanut Butter Swirl, nut, 183, 2.50
 Pumpkin, no nut, 165, 2.75
 Almond, nut, 155, 2.75
@@ -25,4 +24,4 @@ Cake Batter, no nut, 184, 2.50
 Peanut Brittle, nut, 167, 2.50
 Lemon Sorbet, no nut, 131, 1.50
 Snickers Soft Serve, nut, 400, 3.00
-
+Hazelnut, nut, 400, 3.00

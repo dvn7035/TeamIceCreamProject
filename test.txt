@@ -1,9 +1,0 @@
-<<<<<<< HEAD
-Hi I am changng ths document lolz
-=======
-<<<<<<< HEAD
-This is a test document. changed
-=======
-This is a test document, please don't vandalize it much... hello
->>>>>>> 9cae3c3bed97f8fb6543a5f75efa46a8dc90f329
->>>>>>> 53147dc23985fbe429bfbbdc02f67456f166408a

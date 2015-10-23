@@ -31,4 +31,8 @@ public:
 	bool isLeaf() const							   {return (leftPtr == 0 && rightPtr == 0);}
 };
 
+<<<<<<< HEAD:Sean's Files/BinaryNode.h
 #endif
+=======
+#endif 
+>>>>>>> origin/master:BinaryNode.h
