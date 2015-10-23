@@ -1,0 +1,27 @@
+Mango,408.864.8547,deanza.edu/languagearts/
+Vanilla,408.864.8797,www.deanza.edu/buscs/
+Green Tea,408.864.5695,nebula.deanza.edu/PSME_Division/PSME.html
+Fudge Brownie,408.864.5400,www.deanza.edu/counseling/
+Mango Sorbet,408.864.8969,www.deanza.edu/distance/
+Strawberry,408.864.8761,deanza.edu/library/
+Grape Nut,408.864.8732,deanza.edu/healthservices/
+Butter Pecan,408.864.5300,deanza.edu/admissions/appregmenu.html
+Mint Oreo,408.864.8701,www.deanza.edu/bookstore/
+Pistachio,408-864-8833,faculty.deanza.fhda.edu/honors/
+Rainbow Sherbet,408.864.8841,deanza.edu/transfer/
+Blueberry Cheesecake,408.864.5400,deanza.edu/counseling/career/
+Chocolate,408.864.8718,www.deanza.fhda.edu/financialaid/
+Vanilla Soft Serve,408.864.8937,www.deanza.edu/workforceed/
+Coffee,408.864.8547,deanza.edu/languagearts/
+French Vanilla,408.864.8797,www.deanza.edu/buscs/
+Peanut Butter Swirl,408.864.5695,nebula.deanza.edu/PSME_Division/PSME.html
+Pumpkin,408.864.5400,www.deanza.edu/counseling/
+Almond,408.864.8969,www.deanza.edu/distance/
+Mint Chocolate Chip,408.864.8761,deanza.edu/library/
+Peppermint,408.864.8732,deanza.edu/healthservices/
+Maple Walnut,408.864.5300,deanza.edu/admissions/appregmenu.html
+Pecan Caramel Swirl,408.864.8701,www.deanza.edu/bookstore/
+Cake Batter,408-864-8833,faculty.deanza.fhda.edu/honors/
+Peanut Brittle,408.864.8841,deanza.edu/transfer/
+Lemon Sorbet,408-864-8833,faculty.deanza.fhda.edu/honors/
+Snickers Soft Serve,408.864.8841,deanza.edu/transfer/
